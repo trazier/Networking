@@ -39,7 +39,7 @@
 {
     NSOperationQueue *downloadQueue = [NSOperationQueue new];
     [downloadQueue addOperationWithBlock:^{
-        NSString *searchURLString = [NSString stringWithFormat:@"http://api.hasoffers.com/v3/Offer.json?Method=findAll&NetworkToken=NETeMzeZyRUaHEEttxGPWgCPR7BBtS&NetworkId=fraziermoore"];
+        NSString *searchURLString = [NSString stringWithFormat:@"http://api.hasoffers.com/v3/Offer.json?Method=findAll&NetworkToken=NETeMzeZyRUaHEEttxGPWgCPR7BBtS&NetworkId=fraziermoore&filters[status][]=active"];
         
         NSURL *searchURL = [NSURL URLWithString:searchURLString];
         
@@ -51,7 +51,9 @@
         
         NSMutableArray *tempOffers = [NSMutableArray new];
         
-        for (NSDictionary *offer in [searchDict objectForKey:@"data"]) {
+        NSDictionary *responseOffers = [[searchDict objectForKey:@"response"] objectForKey:@"data"];
+        
+        for (NSDictionary *offer in [responseOffers allValues]) {
             Offer *downloadedOffer = [[Offer alloc] initWithJSON:offer];
             [tempOffers addObject:downloadedOffer];
             NSLog(@"offer => %@",offer);
@@ -88,8 +90,8 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDate *object = _offers[indexPath.row];
-    cell.textLabel.text = [object description];
+    Offer *offer = _offers[indexPath.row];
+    cell.textLabel.text =offer.name;
     return cell;
 }
 

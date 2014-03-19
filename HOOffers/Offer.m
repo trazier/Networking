@@ -14,8 +14,8 @@
 {
     if (self = [super init])
     {
-        self.name = [json objectForKey:@"name"];
-        self.html_url = [NSURL URLWithString:[json objectForKey:@"offer_url"]];
+        self.name = [[json objectForKey:@"Offer"] objectForKey:@"name"];
+        self.html_url = [NSURL URLWithString:[[json objectForKey:@"Offer"] objectForKey:@"offer_url"]];
     }
     return self;
 }
